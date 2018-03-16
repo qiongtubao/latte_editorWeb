@@ -1,0 +1,61 @@
+#!/usr/bin/env node
+var Path = require("path")
+	, latte_lib = require("latte_lib")
+	, Fs = latte_lib.fs
+	, Child = require("child_process");
+var GetConfig = function() {
+	var config;
+	var index = process.argv.indexOf("-c");
+	if(index != -1) {
+		config = process.argv[index+1];
+	}
+	config = config || ".latte/editor.json";
+	var buildConfigPath = Path.join(process.cwd()+"/"+config);
+	var buildConfig;
+	try {
+		buildConfig = require(buildConfigPath);
+	}catch(e) {
+		console.log(e);
+		return null;
+	}
+	return buildConfig;
+};
+module.exports = function(a,b,c,d) {
+	var config = GetConfig();
+	process.argv.splice(1, 0, "/usr/local/bin/latte"); 
+	if(!config.io) {
+		config.io = {};
+	}
+	for(var i in config.io) {
+		config.io[i].loadPath = Path.join(process.cwd() + "/" + config.io[i].loadPath)
+	}
+	if(!config.io["/editor/"]) {
+		config.io["/editor/"] = {
+			loadPath: Path.join(__dirname + "/../lib/io"),
+			reloadTime: 1000
+		}
+	}
+	if(!config.staticWeb) {
+		config.staticWeb = {
+			paths: {
+				
+			}
+		};
+	}
+	if(!config.staticWeb.paths["/latte_editor"]) {
+		config.staticWeb.paths["/latte_editor"] = Path.join(__dirname + "/../html");
+	}
+	var Server = require("latte_webServer");	
+	var server = Server.bindServer("editor",config);
+	server.path = Path.resolve(process.cwd(), config.path);
+	console.log(config);
+	latte_lib.debug.disabled = false;
+	process.latte = server;
+	try {
+		server.run();
+	}catch(err) {
+		console.log(err);
+	}
+	//server.run();
+	
+}

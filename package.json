@@ -1,0 +1,19 @@
+{
+	"name":"latte_editor",
+    "version":"0.0.1",
+	"description": "latte_editor",
+	"keywords": ["latte","latte_editor"],
+	"author": "qiongtubao",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/qiongtubao/latte_editor.git"
+	},
+	"bin": {
+	    "editor": "bin/editor"
+  	},
+	"dependencies": {
+		"latte_lib": "*",
+		"latte_webServer": "*"
+	}
+}

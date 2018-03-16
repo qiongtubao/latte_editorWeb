@@ -1,0 +1,14 @@
+latte
+	latte.left
+		rightMenu (data:"fileRightMenu")
+		rightMenu (data:"dirRightMenu")
+		rightMenu (data:"tabHeaderRightMenu")
+		rightMenu (data:"tabBodyRightMenu")
+		dialog (data:"createDialog")
+		dialog (data:"deleteDialog")
+		dialog (data:"renameDialog")
+		latte.fileTree (click:"click", rightClick: "rightClick")
+			fileTree (data: "fileTree")
+	latte.right
+		latte.tab (keys:"keys")
+			tab (data:"tabData")
